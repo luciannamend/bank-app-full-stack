@@ -7,12 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api/banks") //base url
+@CrossOrigin(origins = "http://localhost:5173") // allow webapp requests
 public class BankController {
 
     @Autowired
