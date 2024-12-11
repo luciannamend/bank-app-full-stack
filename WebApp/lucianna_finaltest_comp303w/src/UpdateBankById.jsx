@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { createBank } from './services/bankService.js';
+import { updateBankById } from './services/bankService.js';
 import './css/App.css'
 
-function CreateBank() {
+function UpdateBankById() {
+    const [bankId, setBankId] = useState('');
     const [bankName, setBankName] = useState('');
     const [bankYear, setBankYear] = useState('');
     const [bankEmp, setBankEmp] = useState('');
@@ -15,13 +16,13 @@ function CreateBank() {
         e.preventDefault();
 
         // Validate required fields before sending the request
-        if (!bankName || !bankYear || !bankEmp || !bankAddress || !bankBranches || !bankATMs) {
+        if (!bankId || !bankName || !bankYear || !bankEmp || !bankAddress || !bankBranches || !bankATMs) {
             setErrorMessage('All fields are required');
             return;
         }
 
-        // Create the bank object
-        const newBank = {
+        // Create the updated bank object
+        const updatedBank = {
             bankName,
             bankYear: parseInt(bankYear),
             bankEmp: parseInt(bankEmp),
@@ -30,9 +31,9 @@ function CreateBank() {
             bankATMs: parseInt(bankATMs),
         };
 
-        createBank(newBank)
+        updateBankById(bankId, updatedBank)
             .then((response) => {
-                alert('Bank created successfully');
+                alert('Bank updated successfully');
                 // Clear form on successful submission
                 setBankName('');
                 setBankYear('');
@@ -43,14 +44,24 @@ function CreateBank() {
                 setErrorMessage('');
             })
             .catch((error) => {
-                setErrorMessage('Error creating bank: ' + error.message);
+                setErrorMessage('Error updating bank: ' + error.message);
             });
     };
 
     return (
         <div>
-            <h2>Create Bank</h2>
+            <h2>Update Bank by ID</h2>
             <form onSubmit={handleSubmit}>
+                <div>
+                    <label>Bank ID:</label>
+                    <input
+                        type="text"
+                        value={bankId}
+                        onChange={(e) => setBankId(e.target.value)}
+                        required
+                    />
+                </div>
+
                 <div>
                     <label>Bank Name:</label>
                     <input
@@ -113,10 +124,10 @@ function CreateBank() {
 
                 {errorMessage && <p style={{color: 'red'}}>{errorMessage}</p>}
 
-                <button type="submit">Create Bank</button>
+                <button type="submit">Update Bank</button>
             </form>
         </div>
     );
 }
 
-export default CreateBank;
+export default UpdateBankById;

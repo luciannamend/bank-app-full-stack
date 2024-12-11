@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getAllBanks, getBankById, getBankByName } from './services/bankService.js';
-import './css/DisplayBanks.css'
+import './css/App.css'
 
 function DisplayBanks() {
     const [banks, setBanks] = useState([]);
@@ -76,10 +76,16 @@ function DisplayBanks() {
             <ul>
                 {banks.map((bank) => (
                     <li key={bank.bankId}>
-                        <strong>{bank.bankName}</strong>: {bank.address}
+                        <strong>{bank.bankName}</strong>
+                        <p>Foundation Year: {bank.bankYear}</p>
+                        <p>Number of Employees: {bank.bankEmp}</p>
+                        <p>Number of Branches: {bank.bankBranches}</p>
+                        <p>Number of ATMs: {bank.bankATMs}</p>
+                        <p>{bank.bankAddress}</p>
                     </li>
                 ))}
             </ul>
+
         </div>
     );
 }
