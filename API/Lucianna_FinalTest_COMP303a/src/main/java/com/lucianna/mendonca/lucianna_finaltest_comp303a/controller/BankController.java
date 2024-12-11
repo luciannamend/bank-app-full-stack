@@ -55,13 +55,27 @@ public class BankController {
 
     // • Update a Bank via BankID
     @PutMapping("/by-id/{bankId}")
-    public ResponseEntity<Bank> updateBankById(@PathVariable Long bankId, @RequestBody Bank bank){
+    public ResponseEntity<Bank> updateBankById(@PathVariable Long bankId, @RequestBody Bank updatedBank){
         if(bankId == null){
             System.out.println("Bank Id is null");
             return ResponseEntity.notFound().build(); // 404
         }
+        Optional<Bank> optionalBank = bankRepository.findById(bankId);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(bankRepository.save(bank));
+        Bank existingBank = optionalBank.get();
+
+        if (existingBank == null) {
+            return ResponseEntity.notFound().build();
+        }
+        // Merge fields
+        existingBank.setBankName(updatedBank.getBankName());
+        existingBank.setBankYear(updatedBank.getBankYear());
+        existingBank.setBankEmp(updatedBank.getBankEmp());
+        existingBank.setBankAddress(updatedBank.getBankAddress());
+        existingBank.setBankBranches(updatedBank.getBankBranches());
+        existingBank.setBankATMs(updatedBank.getBankATMs());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(bankRepository.save(existingBank));
     }
 
     // • Update a Bank via BankName
