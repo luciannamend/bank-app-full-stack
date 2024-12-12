@@ -23,12 +23,9 @@ function Display() {
             <ul>
                 {banks.map((bank) => (
                     <li key={bank.bankId}>
-                        <strong>{bank.bankName}</strong>
-                        <p>Foundation Year: {bank.bankYear}</p>
-                        <p>Number of Employees: {bank.bankEmp}</p>
-                        <p>Number of Branches: {bank.bankBranches}</p>
-                        <p>Number of ATMs: {bank.bankATMs}</p>
-                        <p>{bank.bankAddress}</p>
+                        <p>Bank Name:<strong> {bank.bankName}</strong></p>
+                        <p>Founded in {bank.bankYear}, has {bank.bankEmp} employees, {bank.bankBranches} branches, and {bank.bankATMs} ATMs</p>
+                        <p>Address: {bank.bankAddress}</p>
                     </li>
                 ))}
             </ul>

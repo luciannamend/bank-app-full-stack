@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { createBank } from './services/bankService.js';
 import './css/App.css'
 
-function CreateBank() {
+function Create() {
     const [bankName, setBankName] = useState('');
     const [bankYear, setBankYear] = useState('');
     const [bankEmp, setBankEmp] = useState('');
@@ -72,7 +72,7 @@ function CreateBank() {
                 </div>
 
                 <div>
-                    <label>Bank Year (Foundation Year):</label>
+                    <label>Foundation Year:</label>
                     <input
                         type="number"
                         value={bankYear}
@@ -119,4 +119,4 @@ function CreateBank() {
     );
 }
 
-export default CreateBank;
+export default Create;

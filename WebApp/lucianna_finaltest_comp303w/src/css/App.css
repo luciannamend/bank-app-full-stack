@@ -79,6 +79,10 @@ button:focus {
   outline: none;
 }
 
+.btn-danger{
+  background-color: #c1121f;
+}
+
 ul {
   list-style-type: none;
   padding: 0;
