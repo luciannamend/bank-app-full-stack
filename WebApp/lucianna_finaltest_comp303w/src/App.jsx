@@ -1,8 +1,9 @@
 import { Routes, Route, Link } from 'react-router-dom';
 import './css/App.css'
-import DisplayBanks from "./DisplayBanks.jsx";
-import CreateBank from "./CreateBank.jsx";
-import UpdateBankById from "./UpdateBankById.jsx";
+import Display from "./Display.jsx";
+import Create from "./Create.jsx";
+import UpdateById from "./UpdateById.jsx";
+import UpdateByName from "./UpdateByName.jsx";
 
 function App() {
 
@@ -13,15 +14,15 @@ function App() {
                 <Link to="/banks"> Bank List </Link> |
                 <Link to="/"> Create </Link> |
                 <Link to="/update-bank/id"> Update By Id </Link> |
-                {/*<Link to="/registration"> Registration</Link> |*/}
+                <Link to="/update-bank/name"> Update By Name</Link> |
                 {/*<Link to="/login"> Login</Link>*/}
                 {/*<Link to="/logout">Logout</Link>*/}
             </nav>
             <Routes>
-                <Route path="/banks" element={<DisplayBanks/>}/>
-                <Route path="/" element={<CreateBank/>}/>
-                <Route path="/update-bank/id" element={<UpdateBankById/>}/>
-                {/*<Route path="/registration" element={<Registration/>}/>*/}
+                <Route path="/banks" element={<Display/>}/>
+                <Route path="/" element={<Create/>}/>
+                <Route path="/update-bank/id" element={<UpdateById/>}/>
+                <Route path="/update-bank/name" element={<UpdateByName/>}/>
                 {/*<Route path="/login" element={<Login/>}/>*/}
                 {/*<Route path="/logout" element={<Logout/>}/>*/}
             </Routes>
