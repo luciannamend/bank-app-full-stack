@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import {getBankById,updateBankById} from './services/bankService.js';
+import {deleteBankById, getBankById, updateBankById} from './services/bankService.js';
 import './css/App.css'
 
-function UpdateById() {
+function ManageById() {
     const [banks, setBanks] = useState([]);
     const [bankId, setBankId] = useState('');
+    const [idToDelete, setIdToDelete] = useState('');
     const [bankName, setBankName] = useState('');
     const [bankYear, setBankYear] = useState('');
     const [bankEmp, setBankEmp] = useState('');
@@ -20,8 +21,22 @@ function UpdateById() {
             })
             .catch((error) => {
                 console.error('Error fetching bank by ID:', error);
+                alert('Error fetching bank: ' + error.message);
             });
     };
+
+    const handleDeleteById = () => {
+        deleteBankById(idToDelete)
+            .then((response) => {
+                setBanks([response.data]);
+                alert('Bank deleted successfully');
+                setIdToDelete('')
+            })
+            .catch((error) => {
+                console.error('Error deleting bank by ID:', error);
+                setErrorMessage('Error deleting bank: ' + error.message);
+            });
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -46,7 +61,6 @@ function UpdateById() {
             .then((response) => {
                 alert('Bank updated successfully');
                 // Clear form on successful submission
-                setBankNameSearch('')
                 setBankId('')
                 setBankName('');
                 setBankYear('');
@@ -65,7 +79,7 @@ function UpdateById() {
 
     return (
         <div>
-            <h2>Update Bank by ID</h2>
+            <h2>Manage Bank by ID</h2>
 
             <div>
                 <input
@@ -75,6 +89,16 @@ function UpdateById() {
                     onChange={(e) => setBankId(e.target.value)}
                 />
                 <button onClick={handleSearchById}>Search by ID</button>
+            </div>
+
+            <div >
+                <input
+                    type="text"
+                    placeholder="Delete by Bank ID"
+                    value={idToDelete}
+                    onChange={(e) => setIdToDelete(e.target.value)}
+                />
+                <button className="btn-danger" onClick={handleDeleteById}>Delete by ID</button>
             </div>
 
             {banks.map((bank) => (
@@ -155,4 +179,4 @@ function UpdateById() {
     );
 }
 
-export default UpdateById;
+export default ManageById;
