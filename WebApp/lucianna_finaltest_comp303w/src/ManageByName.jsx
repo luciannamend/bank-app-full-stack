@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
-import {getBankById, getBankByName, updateBankById, updateBankByName} from './services/bankService.js';
+import {
+    deleteBankByName,
+    getBankById,
+    getBankByName,
+    updateBankById,
+    updateBankByName
+} from './services/bankService.js';
 import './css/App.css'
 
-function UpdateByName() {
+function ManageByName() {
     const [banks, setBanks] = useState([]);
     const [bankName, setBankName] = useState('');
+    const [nameToDelete, setNameToDelete] = useState('');
     const [bankNameSearch, setBankNameSearch] = useState('')
     const [bankYear, setBankYear] = useState('');
     const [bankEmp, setBankEmp] = useState('');
@@ -17,12 +24,25 @@ function UpdateByName() {
         getBankByName(bankNameSearch)
             .then((response) => {
                 setBanks([response.data]);
-
             })
             .catch((error) => {
                 console.error('Error fetching bank by Name:', error);
+                alert('Error fetching bank: ' + error.message);
             });
     };
+
+    const handleDeleteByName = () => {
+        deleteBankByName(nameToDelete)
+            .then((response) => {
+                setBanks([response.data]);
+                alert('Bank deleted successfully')
+                setNameToDelete('')
+            })
+            .catch((error) => {
+                console.error('Error fetching bank by Name:', error);
+                setErrorMessage('Error deleting bank: ' + error.message);
+            });
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -63,7 +83,7 @@ function UpdateByName() {
 
     return (
         <div>
-            <h2>Update Bank by Name</h2>
+            <h2>Manage Bank by Name</h2>
             <div>
                 <input
                     type="text"
@@ -72,6 +92,15 @@ function UpdateByName() {
                     onChange={(e) => setBankNameSearch(e.target.value)}
                 />
                 <button onClick={handleSearchByName}>Search by Name</button>
+            </div>
+            <div>
+                <input
+                    type="text"
+                    placeholder="Delete by Bank Name"
+                    value={nameToDelete}
+                    onChange={(e) => setNameToDelete(e.target.value)}
+                />
+                <button className="btn-danger" onClick={handleDeleteByName}>Delete by Name</button>
             </div>
 
             {banks.map((bank) => (
@@ -153,4 +182,4 @@ function UpdateByName() {
 }
 
 
-export default UpdateByName;
+export default ManageByName;
