@@ -1,14 +1,9 @@
-import React, { useState } from 'react';
-import {
-    deleteBankByName,
-    getBankByName,
-    updateBankByName
-} from '../services/bankService.js';
+import { useState } from 'react';
+import {deleteBankById, deleteBankByName, getBankByName, updateBankByName} from '../services/bankService.js';
 import '../css/App.css'
 import BankForm from "./BankForm.jsx";
 
 function ManageBankByName() {
-    const [banks, setBanks] = useState([]);
     const [bankName, setBankName] = useState('');
     const [nameToDelete, setNameToDelete] = useState('');
     const [bankNameSearch, setBankNameSearch] = useState('')
@@ -19,10 +14,26 @@ function ManageBankByName() {
     const [bankATMs, setBankATMs] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
+    const clearValues = () =>{
+        // Clear form on successful submission
+        setBankName('');
+        setBankYear('');
+        setBankEmp('');
+        setBankAddress('');
+        setBankBranches('');
+        setBankATMs('');
+        setErrorMessage('');
+    }
+
     const handleSearchByName = () => {
         getBankByName(bankNameSearch)
             .then((response) => {
-                setBanks([response.data]);
+                setBankName(response.data.bankName);
+                setBankYear(response.data.bankYear);
+                setBankEmp(response.data.bankEmp);
+                setBankAddress(response.data.bankAddress);
+                setBankBranches(response.data.bankBranches);
+                setBankATMs(response.data.bankATMs);
             })
             .catch((error) => {
                 console.error('Error fetching bank by Name:', error);
@@ -31,16 +42,23 @@ function ManageBankByName() {
     };
 
     const handleDeleteByName = () => {
-        deleteBankByName(nameToDelete)
-            .then((response) => {
-                setBanks([response.data]);
-                alert('Bank deleted successfully')
-                setNameToDelete('')
-            })
-            .catch((error) => {
-                console.error('Error fetching bank by Name:', error);
-                setErrorMessage('Error deleting bank: ' + error.message);
-            });
+        const confirmDelete = window.confirm(`Are you sure you want to delete the bank ${nameToDelete}?`);
+        if (confirmDelete) {
+            deleteBankById(nameToDelete)
+                .then(() => {
+                    alert('Bank deleted successfully');
+                    setNameToDelete('');
+                    clearValues()
+                })
+                .catch((error) => {
+                    console.error('Error deleting bank by name:', error);
+                    setErrorMessage('Error deleting bank: ' + error.message);
+                });
+        } else {
+            console.log('Deletion canceled by the user.');
+            setNameToDelete('');
+            clearValues()
+        }
     }
 
     const handleSubmit = (e) => {
@@ -63,17 +81,9 @@ function ManageBankByName() {
         };
 
         updateBankByName(bankName, updatedBank)
-            .then((response) => {
+            .then(() => {
                 alert('Bank updated successfully');
-                // Clear form on successful submission
-                setBankNameSearch('')
-                setBankName('');
-                setBankYear('');
-                setBankEmp('');
-                setBankAddress('');
-                setBankBranches('');
-                setBankATMs('');
-                setErrorMessage('');
+                clearValues()
             })
             .catch((error) => {
                 setErrorMessage('Error updating bank: ' + error.message);
@@ -82,42 +92,53 @@ function ManageBankByName() {
 
     return (
         <div>
-
-            <h2>Manage Bank by Name</h2>
-
+            <h2>Edit Bank By Name</h2>
             <section>
                 {/*Search by name*/}
-                <div>
+                <div className="input-button-container">
                     <input
                         type="text"
                         placeholder="Search by Bank Name"
                         value={bankNameSearch}
                         onChange={(e) => setBankNameSearch(e.target.value)}
                     />
-                    <button onClick={handleSearchByName}>Search by Name</button>
+                    <button onClick={handleSearchByName}>Search</button>
                 </div>
             </section>
 
             <section>
+                {/*Form */}
+                <BankForm handleSubmit={handleSubmit}
+                          btnDisplay="Save changes"
+                          bankId={null}
+                          bankName={bankName}
+                          setBankName={setBankName}
+                          bankAddress={bankAddress}
+                          setBankAddress={setBankAddress}
+                          bankYear={bankYear}
+                          setBankYear={setBankYear}
+                          bankEmp={bankEmp}
+                          setBankEmp={setBankEmp}
+                          bankBranches={bankBranches}
+                          setBankBranches={setBankBranches}
+                          bankATMs={bankATMs}
+                          setBankATMs={setBankATMs}
+                          errorMessage={errorMessage}/>
+            </section>
+            <hr/>
+
+            <section>
                 {/*Delete by name*/}
-                <div>
+                <h2>Delete By Name</h2>
+                <div className="input-button-container">
                     <input
                         type="text"
                         placeholder="Delete by Bank Name"
                         value={nameToDelete}
                         onChange={(e) => setNameToDelete(e.target.value)}
                     />
-                    <button className="btn-danger" onClick={handleDeleteByName}>Delete by Name</button>
+                    <button className="btn-danger" onClick={handleDeleteByName}>Delete</button>
                 </div>
-            </section>
-
-            <section>
-                {/*Form section*/}
-                {banks.map((bank) => (
-                    BankForm(["Edit Bank"], handleSubmit, ["Save changes"], bank, bankName,
-                        setBankName, bankAddress, setBankAddress, bankYear, setBankYear, bankEmp, setBankEmp,
-                        bankBranches, setBankBranches, bankATMs, setBankATMs, errorMessage)
-                ))}
             </section>
         </div>
     );

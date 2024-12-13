@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { createBank } from '../services/bankService.js';
 import '../css/App.css'
+import BankForm from "./BankForm.jsx";
 
 function CreateBank() {
     const [bankName, setBankName] = useState('');
@@ -31,7 +32,7 @@ function CreateBank() {
         };
 
         createBank(newBank)
-            .then((response) => {
+            .then(() => {
                 alert('Bank created successfully');
                 // Clear form on successful submission
                 setBankName('');
@@ -50,71 +51,23 @@ function CreateBank() {
     return (
         <div>
             <h2>Create Bank</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Bank Name:</label>
-                    <input
-                        type="text"
-                        value={bankName}
-                        onChange={(e) => setBankName(e.target.value)}
-                        required
-                    />
-                </div>
-
-                <div>
-                    <label>Bank Address:</label>
-                    <input
-                        type="text"
-                        value={bankAddress}
-                        onChange={(e) => setBankAddress(e.target.value)}
-                        required
-                    />
-                </div>
-
-                <div>
-                    <label>Foundation Year:</label>
-                    <input
-                        type="number"
-                        value={bankYear}
-                        onChange={(e) => setBankYear(e.target.value)}
-                        required
-                    />
-                </div>
-
-                <div>
-                    <label>Number of Employees:</label>
-                    <input
-                        type="number"
-                        value={bankEmp}
-                        onChange={(e) => setBankEmp(e.target.value)}
-                        required
-                    />
-                </div>
-
-                <div>
-                    <label>Number of Branches:</label>
-                    <input
-                        type="number"
-                        value={bankBranches}
-                        onChange={(e) => setBankBranches(e.target.value)}
-                        required
-                    />
-                </div>
-
-                <div>
-                    <label>Number of ATMs:</label>
-                    <input
-                        type="number"
-                        value={bankATMs}
-                        onChange={(e) => setBankATMs(e.target.value)}
-                        required
-                    />
-                </div>
-
-                {errorMessage && <p style={{color: 'red'}}>{errorMessage}</p>}
-
-                <button type="submit">Create Bank</button>
-            </form>
+            <BankForm handleSubmit={handleSubmit}
+                      btnDisplay="Create Bank"
+                      bank={null}
+                      bankId={null}
+                      bankName={bankName}
+                      setBankName={setBankName}
+                      bankAddress={bankAddress}
+                      setBankAddress={setBankAddress}
+                      bankYear={bankYear}
+                      setBankYear={setBankYear}
+                      bankEmp={bankEmp}
+                      setBankEmp={setBankEmp}
+                      bankBranches={bankBranches}
+                      setBankBranches={setBankBranches}
+                      bankATMs={bankATMs}
+                      setBankATMs={setBankATMs}
+                      errorMessage={errorMessage}/>
         </div>
     );
 }
