@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { createBank } from './services/bankService.js';
-import './css/App.css'
+import { createBank } from '../services/bankService.js';
+import '../css/App.css'
 
-function Create() {
+function CreateBank() {
     const [bankName, setBankName] = useState('');
     const [bankYear, setBankYear] = useState('');
     const [bankEmp, setBankEmp] = useState('');
@@ -20,7 +20,7 @@ function Create() {
             return;
         }
 
-        // Create the bank object
+        // CreateBank the bank object
         const newBank = {
             bankName,
             bankYear: parseInt(bankYear),
@@ -119,4 +119,4 @@ function Create() {
     );
 }
 
-export default Create;
+export default CreateBank;

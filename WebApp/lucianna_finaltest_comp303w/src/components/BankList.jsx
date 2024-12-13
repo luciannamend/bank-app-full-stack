@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { getAllBanks } from './services/bankService.js';
-import './css/App.css'
+import { getAllBanks } from '../services/bankService.js';
+import '../css/App.css'
 
-function Display() {
+function BankList() {
     const [banks, setBanks] = useState([]);
     // const [bankId, setBankId] = useState('');
     // const [bankName, setBankName] = useState('');
@@ -33,4 +33,4 @@ function Display() {
     );
 }
 
-export default Display;
+export default BankList;

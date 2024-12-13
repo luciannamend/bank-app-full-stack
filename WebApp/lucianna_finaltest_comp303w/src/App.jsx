@@ -1,9 +1,9 @@
 import { Routes, Route, Link } from 'react-router-dom';
 import './css/App.css'
-import Display from "./Display.jsx";
-import Create from "./Create.jsx";
-import ManageById from "./ManageById.jsx";
-import ManageByName from "./ManageByName.jsx";
+import BankList from "./components/BankList.jsx";
+import CreateBank from "./components/CreateBank.jsx";
+import ManageBankById from "./components/ManageBankById.jsx";
+import ManageBankByName from "./components/ManageBankByName.jsx";
 
 function App() {
 
@@ -19,10 +19,10 @@ function App() {
                 {/*<Link to="/logout">Logout</Link>*/}
             </nav>
             <Routes>
-                <Route path="/banks" element={<Display/>}/>
-                <Route path="/" element={<Create/>}/>
-                <Route path="/update-bank/id" element={<ManageById/>}/>
-                <Route path="/update-bank/name" element={<ManageByName/>}/>
+                <Route path="/banks" element={<BankList/>}/>
+                <Route path="/" element={<CreateBank/>}/>
+                <Route path="/update-bank/id" element={<ManageBankById/>}/>
+                <Route path="/update-bank/name" element={<ManageBankByName/>}/>
                 {/*<Route path="/login" element={<Login/>}/>*/}
                 {/*<Route path="/logout" element={<Logout/>}/>*/}
             </Routes>
