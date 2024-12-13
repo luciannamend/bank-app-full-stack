@@ -40,6 +40,7 @@ body {
 h2 {
   color: rgba(12, 12, 14, 0.86);
   margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 
@@ -51,8 +52,15 @@ div {
   margin: 0 auto;
 }
 
+.input-button-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 input[type="text"] {
   width: 100%;
+  flex: 1;
   padding: 10px;
   margin: 10px 0;
   border: 1px solid #ccc;
@@ -103,3 +111,14 @@ li strong {
 li:last-child {
   margin-bottom: 0;
 }
+
+hr {
+  border: none;
+  height: 2px;
+  background: linear-gradient(to right, #780116, #d8572a); /* Gradient effect */
+  margin: 20px 0;
+}
+
+
+
+
