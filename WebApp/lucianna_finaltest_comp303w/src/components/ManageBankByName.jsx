@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import {deleteBankById, deleteBankByName, getBankByName, updateBankByName} from '../services/bankService.js';
+import {deleteBankByName, getBankByName, updateBankByName} from '../services/bankService.js';
 import '../css/App.css'
 import BankForm from "./BankForm.jsx";
 
 function ManageBankByName() {
-    const [bankName, setBankName] = useState('');
+    const [currentBankName, setCurrentBankName] = useState('');
     const [nameToDelete, setNameToDelete] = useState('');
     const [bankNameSearch, setBankNameSearch] = useState('')
+    const [newBankName, setNewBankName] = useState('')
     const [bankYear, setBankYear] = useState('');
     const [bankEmp, setBankEmp] = useState('');
     const [bankAddress, setBankAddress] = useState('');
@@ -14,9 +15,9 @@ function ManageBankByName() {
     const [bankATMs, setBankATMs] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
-    const clearValues = () =>{
+    const clearFormValues = () =>{
         // Clear form on successful submission
-        setBankName('');
+        setNewBankName('')
         setBankYear('');
         setBankEmp('');
         setBankAddress('');
@@ -28,7 +29,9 @@ function ManageBankByName() {
     const handleSearchByName = () => {
         getBankByName(bankNameSearch)
             .then((response) => {
-                setBankName(response.data.bankName);
+                console.log(response.data)
+                setCurrentBankName(response.data.bankName);
+                setNewBankName(response.data.bankName)
                 setBankYear(response.data.bankYear);
                 setBankEmp(response.data.bankEmp);
                 setBankAddress(response.data.bankAddress);
@@ -44,11 +47,11 @@ function ManageBankByName() {
     const handleDeleteByName = () => {
         const confirmDelete = window.confirm(`Are you sure you want to delete the bank ${nameToDelete}?`);
         if (confirmDelete) {
-            deleteBankById(nameToDelete)
+            deleteBankByName(nameToDelete)
                 .then(() => {
                     alert('Bank deleted successfully');
                     setNameToDelete('');
-                    clearValues()
+                    clearFormValues()
                 })
                 .catch((error) => {
                     console.error('Error deleting bank by name:', error);
@@ -57,33 +60,39 @@ function ManageBankByName() {
         } else {
             console.log('Deletion canceled by the user.');
             setNameToDelete('');
-            clearValues()
+            clearFormValues()
         }
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        console.log('BANK NAME SEARCH: ' + bankNameSearch)
+        console.log('BANK NAME TO BE CHANGED: ' + currentBankName)
+        console.log('NEW BANK NAME: ' + newBankName)
+
         // Validate required fields before sending the request
-        if (!bankName || !bankYear || !bankEmp || !bankAddress || !bankBranches || !bankATMs) {
+        if (!currentBankName || !bankYear || !bankEmp || !bankAddress || !bankBranches || !bankATMs) {
             setErrorMessage('All fields are required');
             return;
         }
 
-        // CreateBank the updated bank object
+        // the updated bank object to be passed to the method
         const updatedBank = {
-            bankName,
+            bankName: newBankName,
             bankYear: parseInt(bankYear),
             bankEmp: parseInt(bankEmp),
-            bankAddress,
+            bankAddress: bankAddress,
             bankBranches: parseInt(bankBranches),
             bankATMs: parseInt(bankATMs),
         };
 
-        updateBankByName(bankName, updatedBank)
+        updateBankByName(currentBankName, updatedBank)
             .then(() => {
+                console.log('old bank name:' + currentBankName)
+                console.log('updated bank name: ' + newBankName)
                 alert('Bank updated successfully');
-                clearValues()
+                clearFormValues()
             })
             .catch((error) => {
                 setErrorMessage('Error updating bank: ' + error.message);
@@ -111,8 +120,8 @@ function ManageBankByName() {
                 <BankForm handleSubmit={handleSubmit}
                           btnDisplay="Save changes"
                           bankId={null}
-                          bankName={bankName}
-                          setBankName={setBankName}
+                          bankName={newBankName}
+                          setBankName={setNewBankName}
                           bankAddress={bankAddress}
                           setBankAddress={setBankAddress}
                           bankYear={bankYear}
